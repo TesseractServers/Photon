@@ -27,6 +27,7 @@ local can_change_light_presets = GetConVar( "photon_emv_changepresets" )
 EMVU.Net = {}
 
 function EMVU.Net:Lights( ply, args )
+	if not PhotonConfig.UseELS then return end
 	if not ply:InVehicle() then return end
 	local emv = ply:GetVehicle()
 	if not emv:IsEMV() then return end
@@ -45,6 +46,7 @@ net.Receive("emvu_el", function(len, ply)
 end)
 
 function EMVU.Net:Siren( ply, args )
+	if not PhotonConfig.UseSiren then return end
 	local emv = ply:GetVehicle()
 	if not emv:IsEMV() then return end
 	local argNum = tonumber( args )
@@ -69,6 +71,7 @@ net.Receive("emvu_siren", function( len, ply )
 end)
 
 function EMVU.Net:Illumination( ply, args )
+	if not PhotonConfig.UseIllumination then return end
 	local emv = ply:GetVehicle()
 	if not emv:IsEMV() then return end
 	if args=="on" then
@@ -86,6 +89,7 @@ net.Receive("emvu_illum", function( len, ply )
 end)
 
 function EMVU.Net:Traffic( ply, args )
+	if not PhotonConfig.UseTraffic then return end
 	local emv = ply:GetVehicle()
 	if not emv:IsEMV() then return end
 	if args == "on" then
@@ -103,6 +107,7 @@ net.Receive( "emvu_traffic", function (len, ply )
 end)
 
 function EMVU.Net:SirenSet( ply )
+	if not PhotonConfig.AllowModifySiren then return end
 	local emv = net.ReadEntity()
 	local recv = net.ReadInt(8)
 	local isAux = net.ReadBool()
@@ -121,6 +126,7 @@ net.Receive("emvu_sirenset", function( len, ply )
 end)
 
 function EMVU.Net:Color( ply )
+	if not PhotonConfig.AllowModifyColor then return end
 	local ent = net.ReadEntity()
 	local newCol = net.ReadColor()
 	if not ent:IsEMV() then return false end
@@ -134,6 +140,7 @@ net.Receive( "emvu_color", function( len, ply )
 end)
 
 function EMVU.Net:Preset( ply, args )
+	if not PhotonConfig.AllowModifyPresets then return end
 	local ent = net.ReadEntity()
 	local modifyBlocked = hook.Call( "Photon.CanPlayerModify", GM, ply, ent )
 	if modifyBlocked == false then return end
@@ -147,6 +154,7 @@ net.Receive( "emvu_preset", function( len, ply )
 end)
 
 function EMVU.Net.Selection( ply )
+	if not PhotonConfig.AllowModifySelection then return end
 	local ent = net.ReadEntity()
 	local category = net.ReadInt(8)
 	local option = net.ReadInt(8)
@@ -161,6 +169,7 @@ net.Receive( "emvu_selection", function( len, ply )
 end)
 
 function EMVU.Net:Blackout( ply, arg )
+	if not PhotonConfig.UseBlackout then return end
 	if not ply:InVehicle() or not ply:GetVehicle():IsEMV() then return end
 	local emv = ply:GetVehicle()
 	emv:ELS_Blackout( arg )
@@ -170,6 +179,7 @@ net.Receive( "emvu_blackout", function( len, ply )
 end)
 
 function EMVU.Net:Horn( ply, arg )
+	if not PhotonConfig.UseHorn then return end
 	if not ply:InVehicle() or not ply:GetVehicle():IsEMV() then return end
 	local emv = ply:GetVehicle()
 	emv:ELS_Horn( arg )
@@ -179,6 +189,7 @@ net.Receive( "emvu_horn", function( len, ply )
 end)
 
 function EMVU.Net:Manual( ply, arg )
+	if not PhotonConfig.UseSiren then return end
 	if not ply:InVehicle() or not ply:GetVehicle():IsEMV() then return end
 	local emv = ply:GetVehicle()
 	emv:ELS_ManualSiren( arg )
@@ -188,6 +199,7 @@ net.Receive( "emvu_manual", function( len, ply )
 end)
 
 function EMVU.Net:Livery( ply, category, skin, unit )
+	if not PhotonConfig.AllowMOdifyLivery then return end
 	if not ply:InVehicle() or not ply:GetVehicle():IsEMV() then return end
 	if game.SinglePlayer() == false then
 		if not ply.LastLiveryChange then ply.LastLiveryChange = 0 end
@@ -206,6 +218,7 @@ net.Receive( "emvu_livery", function( len, ply )
 end)
 
 function Photon.Net:Signal( ply )
+	if not PhotonConfig.UseSignal then return end
 	if not ply:InVehicle() or not ply:GetVehicle():Photon() then return end
 	local car = ply:GetVehicle()
 	local signal = net.ReadInt(3)

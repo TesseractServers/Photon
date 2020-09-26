@@ -505,6 +505,7 @@ function EMVU:MakeEMV( ent, emv )
 	end
 
 	function ent:ELS_Blackout( state )
+		if not PhotonConfig.UseLights and not state then return end -- Prevent blackout from being disabled
 		if not IsValid( self ) then return end
 		if self:ELS_NoSiren() then return end
 		if state then

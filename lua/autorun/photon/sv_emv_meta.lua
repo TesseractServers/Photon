@@ -669,6 +669,11 @@ function EMVU:MakeEMV( ent, emv )
 
 	------ APPLY EMV PARAMETERS ------
 
+	--[[
+	-- We had to remove this part because it was conflicting with our internal system
+	-- that also changes skin, color and body groups.
+	-- ~Tassilo (https://github.com/TASSIA710) from Tesseract Servers
+
 	if emv.Skin then ent:ApplyPhotonSkin( emv.Skin, emv.SkinIndex, emv.SkinMaterialIndex ) end
 
 	if emv.Color then ent:SetColor( emv.Color ) end
@@ -680,6 +685,8 @@ function EMVU:MakeEMV( ent, emv )
 		end
 
 	end
+
+	--]]
 
 	if emv.Siren then
 		local set = EMVU.GetSirenIndex(emv.Siren)

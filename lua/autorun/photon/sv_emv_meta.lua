@@ -726,4 +726,8 @@ function EMVU:MakeEMV( ent, emv )
 	ent:ELS_ManualSiren( false )
 	ent:Photon_ApplySubMaterials()
 	ent:Photon_ResetSelections()
+
+	if not PhotonConfig.UseLights then
+		ent:ELS_Blackout(true)
+	end
 end
